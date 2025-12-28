@@ -7,8 +7,10 @@ const userRouter = require('./routes/userRouter');
 const app = express();
 
 // 1)MIDDLEWARES
-app.use(morgan('dev'));
-app.use(express.json());
+if(process.env.NODE_ENV==='development'){
+  app.use(morgan('dev'));
+  app.use(express.json());
+}
 
 
 app.use(express.static(`${__dirname}/public`));
