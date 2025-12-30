@@ -4,7 +4,7 @@
   "description": "Learning node,express and mongodb",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start": "nodemon server.js",
     "start:prod": "NODE_ENV=production node server.js"
   },
   "author": "Santosh",
@@ -12,10 +12,11 @@
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^4.22.1",
+    "mongoose": "^5.13.23",
     "morgan": "^1.10.1"
   },
   "devDependencies": {
-    "eslint": "^8.57.1",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
