@@ -55,30 +55,25 @@ exports.createTour = async (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  // const id = req.params.id * 1;
-  // Find the index of the tour to update
-  // const tourIndex = tours.findIndex((el) => el.id === id);
-  // Manually update the tour data by combining both the properties
-  // const updatedTour = { ...tours[tourIndex], ...req.body };
-  // Replace the old tour with the updated one in the array
-  // tours[tourIndex] = updatedTour;
-  // Save the updated tours array to the file
-  // fs.writeFile(
-  //   `${__dirname}/dev-data/data/tours-simple.json`,
-  //   JSON.stringify(tours),
-  //   (err) => {
-  //     if (err) {
-  //       return res.status(500).json({
-  //         status: 'fail',
-  //         message: 'Error writing file',
-  //       });
-  //     }
-  //     res.status(200).json({
-  //       status: 'success',
-  //       data: { tour: updatedTour },
-  //     });
-  //   },
-  // );
+  exports.updateTour = async (req, res) => {
+    try {
+      const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.status(200).json({
+        status: 'success',
+        data: {
+          tour,
+        },
+      });
+    } catch (err) {
+      res.status(400).json({
+        status: 'fail',
+        message: err,
+      });
+    }
+  };
 };
 
 exports.deleteTour = (req, res) => {
