@@ -17,13 +17,13 @@ exports.getAllTours = catchAsync(async (req, res) => {
     .sort()
     .limitFields()
     .paginate();
-  const tours = await features.query;
 
   // const query= await Tour.find()
   //   .where('duration')
   //   .equals(5)
   //   .where('difficulty')
   //   .equals('easy');
+  const tours = await features.query;
 
   res.status(200).json({
     status: 'success',

@@ -11,8 +11,10 @@
   "author": "Santosh",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "express": "^4.22.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^5.13.23",
     "morgan": "^1.10.1",
     "slugify": "^1.6.6",
