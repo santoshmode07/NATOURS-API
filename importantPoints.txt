@@ -1,0 +1,5 @@
+//This populate is used to embedd the data 
+.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
