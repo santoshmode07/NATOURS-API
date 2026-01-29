@@ -73,4 +73,6 @@ exports.updateUser = (req, res) => {
   });
 };
 
+// Do NOT update passwords with this!
+exports.updateUser = factory.updateOne(User);
 exports.deleteUser = factory.deleteOne(User);
