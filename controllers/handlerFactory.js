@@ -76,8 +76,8 @@ exports.getAll = (Model) =>
     //   .equals(5)
     //   .where('difficulty')
     //   .equals('easy');
+    // const docs = await features.query.explain();
     const docs = await features.query;
-
     res.status(200).json({
       status: 'success',
       results: docs.length,
