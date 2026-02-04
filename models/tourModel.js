@@ -124,6 +124,7 @@ const tourSchema = new mongoose.Schema(
 
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
 
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
@@ -171,7 +172,7 @@ tourSchema.post(/^find/, function (docs, next) {
   next();
 });
 
-tourSchema.pre('/^find', function (next) {
+tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
     select: '-__v -passwordChangedAt',
@@ -180,12 +181,12 @@ tourSchema.pre('/^find', function (next) {
 });
 
 //AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({
-    $match: { secretTour: { $ne: true } },
-  });
-  next();
-});
+// tourSchema.pre('aggregate', function (next) {
+//   this.pipeline().unshift({
+//     $match: { secretTour: { $ne: true } },
+//   });
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 
