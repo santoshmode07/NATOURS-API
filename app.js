@@ -39,11 +39,20 @@ app.use(
       fontSrc: ["'self'", 'https:', 'data:'],
       scriptSrc: ["'self'", 'https://unpkg.com'],
       styleSrc: ["'self'", 'https://unpkg.com', 'https://fonts.googleapis.com'],
-      imgSrc: ["'self'", 'data:', 'https://*.tile.openstreetmap.org', 'https://unpkg.com'],
-      connectSrc: ["'self'", 'https://*.tile.openstreetmap.org', 'https://unpkg.com'],
+      imgSrc: [
+        "'self'",
+        'data:',
+        'https://*.tile.openstreetmap.org',
+        'https://unpkg.com',
+      ],
+      connectSrc: [
+        "'self'",
+        'https://*.tile.openstreetmap.org',
+        'https://unpkg.com',
+      ],
       workerSrc: ["'self'", 'blob:'],
     },
-  })
+  }),
 );
 
 // Development logging
