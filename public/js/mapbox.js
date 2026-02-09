@@ -1,6 +1,5 @@
 /* eslint-disable */
-
-const displayMap = (locations) => {
+export const displayMap = (locations) => {
   // Create map
   const map = L.map('map', {
     scrollWheelZoom: false,
@@ -38,10 +37,3 @@ const displayMap = (locations) => {
     padding: [150, 150],
   });
 };
-
-const mapBox = document.getElementById('map');
-
-if (mapBox) {
-  const locations = JSON.parse(mapBox.dataset.locations);
-  displayMap(locations);
-}

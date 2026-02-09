@@ -12,6 +12,7 @@ const mongosanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 //Prevent parameter pollution
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./Utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -37,7 +38,7 @@ app.use(
       defaultSrc: ["'self'"],
       baseUri: ["'self'"],
       fontSrc: ["'self'", 'https:', 'data:'],
-      scriptSrc: ["'self'", 'https://unpkg.com'],
+      scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdn.jsdelivr.net'],
       styleSrc: ["'self'", 'https://unpkg.com', 'https://fonts.googleapis.com'],
       imgSrc: [
         "'self'",
@@ -49,6 +50,7 @@ app.use(
         "'self'",
         'https://*.tile.openstreetmap.org',
         'https://unpkg.com',
+        'https://cdn.jsdelivr.net',
       ],
       workerSrc: ["'self'", 'blob:'],
     },
@@ -71,6 +73,7 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json());
+app.use(cookieParser());
 
 //Data sanitization against NoSQL query injection
 
@@ -97,6 +100,7 @@ app.use(
 // Test middleware
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
+  console.log(req.cookies);
   next();
 });
 

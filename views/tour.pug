@@ -3,8 +3,7 @@ include _reviewCard
 
 block append head
     link(rel='stylesheet' href='https://unpkg.com/leaflet/dist/leaflet.css')
-    script(src='https://unpkg.com/leaflet/dist/leaflet.js' defer)
-    script(src='/js/mapbox.js' defer)
+    script(src='https://unpkg.com/leaflet/dist/leaflet.js')
 
 mixin overviewBox(label,text,icon)
     .overview-box__detail
@@ -71,7 +70,7 @@ block content
                 img.picture-box__img(src=`/img/tours/${img}`, alt=`${tour.name}-${i+1}`, class=`picture-box__img--${i+1}`)
 
     section.section-map
-        #map(data-locations=`${JSON.stringify(tour.locations)}`)
+        #map(data-locations=JSON.stringify(tour.locations))
 
     section.section-reviews
         .reviews
