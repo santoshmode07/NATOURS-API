@@ -132,11 +132,6 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 
-// Ignore Chrome DevTools probe request to avoid noisy 404 error logs.
-app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
-  res.status(204).end();
-});
-
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
