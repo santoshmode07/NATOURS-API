@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
 const pug = require('pug');
-const htmltoText = require('html-to-text');
+const { convert } = require('html-to-text');
 
 // new Email(user,url).sendWelcome();
 module.exports = class Email {
   constructor(user, url) {
-    this.ti = user.email;
+    this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
     this.from = `Santosh <${process.env.EMAIL_FROM}>`;
@@ -14,7 +14,13 @@ module.exports = class Email {
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
       //Send Grid
-      return 1;
+      return nodemailer.createTransport({
+        service: 'SendinBlue',
+        auth: {
+          user: process.env.BREVO_USERNAME,
+          pass: process.env.BREVO_PASSWORD,
+        },
+      });
     }
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -28,21 +34,18 @@ module.exports = class Email {
 
   async send(template, subject) {
     //1)Render HTML based on pug template
-    const html = pug.renderFile(
-      `${__dirname}/../views/emails/${template}.pug`,
-      {
-        firstName: this.firstName,
-        url: this.url,
-        subject,
-      },
-    );
+    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+      firstName: this.firstName,
+      url: this.url,
+      subject,
+    });
     //2) Define the email options
     const mailOptions = {
       from: this.from,
       to: this.to,
       subject,
       html,
-      text: htmltoText(html),
+      text: convert(html),
       // html:
     };
 
@@ -51,6 +54,13 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send('Welcome', 'Welcome to the Natours Family !');
+    await this.send('welcome', 'Welcome to the Natours Family !');
+  }
+
+  async sendPasswordReset() {
+    await this.send(
+      'passwordReset',
+      'Your password reset token (valid for only 10 minutes)',
+    );
   }
 };
