@@ -34,7 +34,13 @@ app.set('views', path.join(__dirname, 'views'));
 // 1) GLOBAL MIDDLEWARES
 
 app.use(cors());
-// app.use(cors({ origin: 'https://natours-api-eight.vercel.app/' }));
+app.use(
+  cors({
+    origin: 'https://natours-api-eight.vercel.app/',
+    credentials: true,
+  }),
+);
+
 app.options('*', cors());
 
 // Ignore Chrome DevTools noise
