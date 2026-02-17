@@ -10,6 +10,10 @@ process.on('uncaughtException', (err) => {
 dotenv.config({ path: path.join(__dirname, 'config.env') });
 
 const mongoose = require('mongoose');
+
+// Disable buffering globally to catch connection errors immediately
+mongoose.set('bufferCommands', false);
+
 const app = require('./app');
 
 if (!process.env.DATABASE) {
