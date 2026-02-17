@@ -45,7 +45,7 @@ exports.signup = catchAsync(async (req, res, next) => {
       photo: req.body.photo,
     });
     const url = `${req.protocol}://${req.get('host')}/me`;
-    console.log(url);
+    // console.log(url);
 
     await new Email(newUser, url).sendWelcome();
     createSendToken(newUser, 201, res);
@@ -75,7 +75,7 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
 
 exports.sendOTP = catchAsync(async (req, res, next) => {
   const { email, name } = req.body;
-  console.log(email);
+  // console.log(email);
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   await Verify.deleteOne({ email: email });
   await Verify.create({ email: email, otp: otp });

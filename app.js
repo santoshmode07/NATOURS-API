@@ -13,6 +13,7 @@ const xss = require('xss-clean');
 //Prevent parameter pollution
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 
 const AppError = require('./Utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -59,6 +60,7 @@ app.use(
         'https://*.tile.openstreetmap.org',
         'https://unpkg.com',
         'https://cdn.jsdelivr.net',
+        'ws://127.0.0.1:*',
       ],
       frameSrc: ["'self'", 'https://js.stripe.com'],
       workerSrc: ["'self'", 'blob:'],
@@ -107,6 +109,8 @@ app.use(
     ],
   }),
 );
+
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
