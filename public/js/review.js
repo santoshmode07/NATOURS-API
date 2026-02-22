@@ -15,12 +15,14 @@ export const createReview = async (tour, rating, review) => {
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'Review submitted successfully!');
-      window.setTimeout(() => {
-        location.assign(`/tour/${res.data.data.data.tour.slug}`);
-      }, 1500);
+      return true;
     }
+    return false;
   } catch (err) {
-    showAlert('error', err.response.data.message);
+    const message =
+      err?.response?.data?.message ||
+      'Unable to submit your review right now. Please try again.';
+    showAlert('error', message);
+    return false;
   }
 };

@@ -48,7 +48,8 @@ style.
   .main {
     background: #ffffff;
     border-radius: 18px;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
     box-shadow: 0 12px 30px rgba(25, 36, 43, 0.1);
     overflow: hidden;
   }
@@ -94,7 +95,10 @@ style.
   }
   .wrapper {
     box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
     padding: 24px 22px 18px;
+    overflow: hidden;
   }
   h1,
   h2,
@@ -133,11 +137,16 @@ style.
     color: #6e8088;
   }
   .mail-panel {
+    box-sizing: border-box;
+    width: 100% !important;
+    max-width: 100% !important;
     border-radius: 12px;
     border: 1px solid #dbe7e1;
     padding: 14px 16px;
     margin: 8px 0 18px;
     background: #f7fbf9;
+    overflow: hidden;
+    word-break: break-word;
   }
   .mail-panel--welcome {
     background: #f3fbf5;
@@ -152,14 +161,18 @@ style.
     border-color: #cbdcf8;
   }
   .booking-cover {
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
     border-radius: 12px;
     margin-bottom: 12px;
     display: block;
   }
   .booking-grid {
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
     border-collapse: collapse;
+    table-layout: fixed;
   }
   .booking-grid td {
     padding: 6px 0;
@@ -177,6 +190,8 @@ style.
   .booking-value {
     color: #20303a;
     font-weight: 700;
+    word-break: break-word;
+    overflow-wrap: anywhere;
   }
   .mail-panel p {
     margin-bottom: 8px;

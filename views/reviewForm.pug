@@ -12,4 +12,4 @@ block content
                     label.form__label(for='review') Your Review
                     textarea#review.form__input(placeholder='Tell us about your experience...', required, rows='5')
                 .form__group
-                    button.btn.btn--green.btn--save-review(data-tour-id=`${tour.id}`) Submit Review
+                    button.btn.btn--green.btn--save-review(data-tour-id=`${tour.id}` data-tour-slug=`${tour.slug}`) Submit Review

@@ -963,20 +963,29 @@ body {
 }
 @media only screen and (max-width: 50em) {
   .user-view__menu .side-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 1.5rem 1rem;
-    gap: 1.5rem;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 1.5rem 0;
+    gap: 0.4rem;
   }
   .user-view__menu .side-nav li {
     margin: 0;
+    width: 100%;
     border: none;
+  }
+  .user-view__menu .side-nav a:link,
+  .user-view__menu .side-nav a:visited {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 1.1rem 2rem;
   }
   .user-view__menu .side-nav--active,
   .user-view__menu .side-nav li:hover {
     border-left: none;
-    border-bottom: 2px solid #fff;
+    border-bottom: none;
+    border-left: 4px solid #fff;
   }
 }
 .user-view__content {

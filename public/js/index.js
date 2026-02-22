@@ -142,10 +142,24 @@ if (bookBtn)
   });
 
 if (reviewForm)
-  reviewForm.addEventListener('submit', (e) => {
+  reviewForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const tour = document.querySelector('.btn--save-review').dataset.tourId;
+    const reviewBtn = document.querySelector('.btn--save-review');
+    reviewBtn.textContent = 'Submitting review...';
+    reviewBtn.disabled = true;
+    const { tourId: tour, tourSlug } = reviewBtn.dataset;
     const rating = document.getElementById('rating').value;
     const review = document.getElementById('review').value;
-    createReview(tour, rating, review);
+    const submitted = await createReview(tour, rating, review);
+
+    if (submitted) {
+      showAlert('success', 'Review submitted successfully!');
+      window.setTimeout(() => {
+        location.assign(`/tour/${tourSlug}`);
+      }, 1200);
+      return;
+    }
+
+    reviewBtn.textContent = 'Submit Review';
+    reviewBtn.disabled = false;
   });
