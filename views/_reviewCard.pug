@@ -1,9 +1,10 @@
 mixin reviewCard(review)
     - const reviewerName = review.user && review.user.name ? review.user.name : 'Deleted user'
     - const reviewerPhoto = review.user && review.user.photo ? review.user.photo : 'default.jpg'
+    - const reviewerPhotoSrc = reviewerPhoto.startsWith('http') ? reviewerPhoto : `/img/users/${reviewerPhoto}`
     .reviews__card
         .reviews__avatar
-            img.reviews__avatar-img(src=`/img/users/${reviewerPhoto}`, alt=`${reviewerName}`)
+            img.reviews__avatar-img(src=reviewerPhotoSrc, alt=`${reviewerName}`)
             h6.reviews__user= reviewerName
         p.reviews__text= review.review
         .reviews__rating

@@ -7,6 +7,49 @@ const catchAsync = require('../Utils/catchAsync');
 const AppError = require('../Utils/appError');
 const factory = require('./handlerFactory');
 
+const cloudinary = (() => {
+  try {
+    return require('cloudinary').v2;
+  } catch (err) {
+    return null;
+  }
+})();
+
+const isCloudinaryConfigured = () =>
+  Boolean(
+    cloudinary &&
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET,
+  );
+
+const uploadBufferToCloudinary = (buffer, publicId) => {
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'natours/users',
+        public_id: publicId,
+        resource_type: 'image',
+      },
+      (err, result) => {
+        if (err) return reject(err);
+        return resolve(result);
+      },
+    );
+
+    uploadStream.end(buffer);
+  });
+};
+
+const isReadOnlyFsRuntime = () =>
+  process.env.VERCEL === '1' || process.env.NODE_ENV === 'production';
+
 // const multerStorage = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     cb(null, 'public/img/users');
@@ -38,17 +81,45 @@ exports.uploadUserPhoto = upload.single('photo');
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  const filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  const processedBuffer = await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toBuffer();
+
+  if (isReadOnlyFsRuntime()) {
+    if (!isCloudinaryConfigured()) {
+      return next(
+        new AppError(
+          'Profile photo upload is not configured for production. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.',
+          503,
+        ),
+      );
+    }
+
+    try {
+      const publicId = filename.replace('.jpeg', '');
+      const uploaded = await uploadBufferToCloudinary(
+        processedBuffer,
+        publicId,
+      );
+      req.file.filename = uploaded.secure_url;
+      return next();
+    } catch (err) {
+      return next(
+        new AppError(`Unable to upload profile photo: ${err.message}`, 500),
+      );
+    }
+  }
+
+  req.file.filename = filename;
   const uploadDir = path.join(__dirname, '..', 'public', 'img', 'users');
   const outputPath = path.join(uploadDir, req.file.filename);
 
   try {
     await fs.promises.mkdir(uploadDir, { recursive: true });
-    await sharp(req.file.buffer)
-      .resize(500, 500)
-      .toFormat('jpeg')
-      .jpeg({ quality: 90 })
-      .toFile(outputPath);
+    await sharp(processedBuffer).toFile(outputPath);
   } catch (err) {
     return next(
       new AppError(
