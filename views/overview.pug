@@ -6,7 +6,7 @@ block content
     main.main 
         .card-container
             each tour in tours
-                .card
+                a.card.card--link(href=`/tour/${tour.slug}` aria-label=`View ${tour.name} tour details`)
                     .card__header 
                         .card__picture
                             .card__picture-overlay &nbsp;
@@ -43,4 +43,4 @@ block content
                             span.card__footer-value= tour.ratingsAverage
                             | 
                             span.card__footer-text= `rating(${tour.ratingsQuantity})`
-                        a.btn.btn--green.btn--small(href=`/tour/${tour.slug}`) Details
+                        span.btn.btn--green.btn--small Details

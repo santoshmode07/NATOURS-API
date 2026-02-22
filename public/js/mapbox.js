@@ -1,8 +1,20 @@
 /* eslint-disable */
 export const displayMap = (locations) => {
+  const isTouchDevice =
+    window.matchMedia('(max-width: 50em)').matches ||
+    'ontouchstart' in window ||
+    navigator.maxTouchPoints > 0;
+
   // Create map
   const map = L.map('map', {
     scrollWheelZoom: false,
+    dragging: !isTouchDevice,
+    touchZoom: !isTouchDevice,
+    doubleClickZoom: !isTouchDevice,
+    boxZoom: !isTouchDevice,
+    keyboard: !isTouchDevice,
+    tap: false,
+    zoomControl: !isTouchDevice,
   });
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
