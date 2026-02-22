@@ -98,7 +98,10 @@ export const forgotPassword = async (email) => {
     });
 
     if (res.data.status === 'success') {
-      showAlert('success', 'Token sent to email!');
+      showAlert(
+        'success',
+        'Password reset link sent. Please check your inbox.',
+      );
     }
   } catch (err) {
     showAlert('error', err.response.data.message);

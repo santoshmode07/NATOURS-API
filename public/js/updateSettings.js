@@ -21,6 +21,9 @@ export const updateSettings = async (data, type) => {
       }, 1500);
     }
   } catch (err) {
-    showAlert('error', err.response.data.message);
+    const message =
+      err?.response?.data?.message ||
+      'Unable to update settings right now. Please try again.';
+    showAlert('error', message);
   }
 };

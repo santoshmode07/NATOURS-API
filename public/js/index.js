@@ -21,6 +21,8 @@ const logOutBtn = document.querySelector('.nav__el--logout');
 
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const userPhotoInput = document.getElementById('photo');
+const userPhotoPreview = document.getElementById('user-photo-preview');
 
 const bookBtn = document.getElementById('book-tour');
 const sendOtpBtn = document.getElementById('send-otp');
@@ -65,13 +67,26 @@ if (logOutBtn)
     e.preventDefault();
     logout();
   });
+
+if (userPhotoInput && userPhotoPreview) {
+  userPhotoInput.addEventListener('change', (e) => {
+    const [file] = e.target.files;
+    if (!file || !file.type.startsWith('image/')) return;
+    userPhotoPreview.src = URL.createObjectURL(file);
+    userPhotoPreview.onload = () => {
+      URL.revokeObjectURL(userPhotoPreview.src);
+    };
+  });
+}
+
 if (userDataForm)
   userDataForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
-    form.append('photo', document.getElementById('photo').files[0]);
+    const selectedPhoto = userPhotoInput?.files?.[0];
+    if (selectedPhoto) form.append('photo', selectedPhoto);
 
     updateSettings(form, 'data');
   });

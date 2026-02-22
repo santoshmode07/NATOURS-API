@@ -1,5 +1,7 @@
 const multer = require('multer');
 const sharp = require('sharp');
+const fs = require('fs');
+const path = require('path');
 const User = require('../models/userModel');
 const catchAsync = require('../Utils/catchAsync');
 const AppError = require('../Utils/appError');
@@ -37,11 +39,24 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
   req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
-  await sharp(req.file.buffer)
-    .resize(500, 500)
-    .toFormat('jpeg')
-    .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+  const uploadDir = path.join(__dirname, '..', 'public', 'img', 'users');
+  const outputPath = path.join(uploadDir, req.file.filename);
+
+  try {
+    await fs.promises.mkdir(uploadDir, { recursive: true });
+    await sharp(req.file.buffer)
+      .resize(500, 500)
+      .toFormat('jpeg')
+      .jpeg({ quality: 90 })
+      .toFile(outputPath);
+  } catch (err) {
+    return next(
+      new AppError(
+        `Unable to process profile photo upload: ${err.message}`,
+        500,
+      ),
+    );
+  }
 
   next();
 });
